@@ -60,6 +60,16 @@ func (ns NamingStrategy) TableName(str string) string {
 	if ns.SingularTable {
 		return ns.TablePrefix + ns.toDBName(str)
 	}
+
+	if ns.TableNameCase != DefaultCase {
+		switch ns.TableNameCase {
+		case CamelCase:
+			bts := []byte(str)
+			bts[0] = bytes.ToLower([]byte{bts[0]})[0]
+			str = string(bts)
+			return ns.TablePrefix + str
+		}
+	}
 	return ns.TablePrefix + inflection.Plural(ns.toDBName(str))
 }
 
