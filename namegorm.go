@@ -53,6 +53,10 @@ type NamingStrategy struct {
 
 // TableName convert string to table name
 func (ns NamingStrategy) TableName(str string) string {
+	if str == "" {
+		return ""
+	}
+
 	if ns.TableNameFunc != nil {
 		return ns.TableNameFunc(str)
 	}
@@ -85,6 +89,10 @@ func (ns NamingStrategy) SchemaName(table string) string {
 
 // ColumnName convert string to column name
 func (ns NamingStrategy) ColumnName(table, column string) string {
+	if column == "" {
+		return column
+	}
+
 	if ns.ColumnNameFunc != nil {
 		return ns.ColumnNameFunc(column)
 	}
