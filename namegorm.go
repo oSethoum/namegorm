@@ -54,15 +54,16 @@ type NamingStrategy struct {
 // TableName convert string to table name
 func (ns NamingStrategy) TableName(str string) string {
 	if str == "" {
-		return ""
+		return ns.TablePrefix
 	}
 
+	str = inflection.Plural(str)
 	if ns.TableNameFunc != nil {
 		return ns.TableNameFunc(str)
 	}
 
 	if ns.SingularTable {
-		return ns.TablePrefix + ns.toDBName(str)
+		return ns.TablePrefix + string(byte(str[0])) + str[1:]
 	}
 
 	if ns.TableNameCase != DefaultCase {
